@@ -9,16 +9,19 @@ const {
 const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
-	name: "spelanmälan",
+	name: "anmäl",
 	creator: false,
 	data: new SlashCommandBuilder()
-		.setName("spelanmälan")
+		.setName("anmäl")
 		.setDescription("Anmälning till nästkommande Airsoftspel.")
 		.addStringOption((option) => {
 			return (option = option.setName("namn").setDescription("Ditt namn.").setRequired(true));
 		})
 		.addStringOption((option) => {
-			return (option = option.setName("lag").setDescription("Eventuellt lag.").setRequired(false));
+			return (option = option
+				.setName("lag")
+				.setDescription("Lägg till eventuellt lag.")
+				.setRequired(false));
 		}),
 	async execute(interaction, bot) {
 		const row = new ActionRowBuilder().addComponents(
