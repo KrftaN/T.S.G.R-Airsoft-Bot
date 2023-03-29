@@ -6,9 +6,8 @@ const mongo = require("../utility/mongo.js");
 module.exports = {
 	name: "messageCreate",
 	async execute(message, bot) {
-		if (message.channel.type === "DM" && !message.author.bot) {
-			console.log(`"${message.content}"\n-${message.author.tag}`);
-		}
+		//console.log(message.content);
+
 		if (message.author.bot || message.channel.type === "DM") return;
 
 		try {

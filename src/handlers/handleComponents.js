@@ -1,11 +1,9 @@
-const { Collection } = require("discord.js");
 module.exports.handleComponents = async (interaction, bot) => {
 	const { customId } = interaction;
 
 	console.log(customId);
 
 	const component = bot.components.get(customId);
-
 	try {
 		await component.execute(interaction, bot);
 	} catch (error) {

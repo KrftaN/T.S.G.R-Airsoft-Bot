@@ -10,13 +10,13 @@ module.exports = {
 	async execute(bot) {
 		loadCommands(bot);
 		loadComponents(bot);
-		/* await mongo().then(() => {
+		await mongo().then(() => {
 			try {
 				console.log("-> Connected to mongo!");
 			} finally {
 				mongoose.connection.close();
 			}
-		}); */
+		});
 
 		console.log(
 			`-> Connect as ${bot.user.tag}\n-> Ready on ${bot.guilds.cache.size} servers for a total of ${bot.users.cache.size} users`

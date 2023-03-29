@@ -6,14 +6,13 @@ module.exports = {
 	async execute(interaction, bot) {
 		const { commandName } = interaction;
 
-		if (!interaction.isCommand() && !interaction.isButton()) return;
-		if (interaction.isButton()) {
+		if (!interaction.isCommand() && !interaction.isButton() && !interaction.isModalSubmit()) return;
+
+		if (interaction.isButton() || interaction.isModalSubmit()) {
 			handleComponents(interaction, bot);
 		}
 
 		const slashCommand = bot.slashCommands.get(commandName);
-		if (!slashCommand) return;
-
-		handleCommands(slashCommand, bot, interaction);
+		if (slashCommand) return handleCommands(slashCommand, bot, interaction);
 	},
 };
