@@ -5,10 +5,10 @@ const {
 	TextInputStyle,
 	EmbedBuilder,
 } = require("discord.js");
+const { findDuplicateObjects } = require("../../utility/functions/findDuplicateObjects");
 const {
 	spelanmälningarData,
 } = require("../../utility/database-functions/spelanmälning/spelanmälningarData");
-
 module.exports = {
 	name: "ANMÄLNING_AVANMÄL",
 	async execute(interaction, bot) {
@@ -25,15 +25,11 @@ module.exports = {
 		);
 
 		const { anmälda } = await spelanmälningarData(interaction.message.id);
-		if (
-			!anmälda.find((obj) => {
-				if (obj.userId == interaction.user.id) return true;
-			})
-		)
-			return await interaction.reply({
-				embeds: [new EmbedBuilder().setTitle("Du är inte anmäld!").setColor("#FF0000")],
-				ephemeral: true,
-			});
+		const duplicates = await findDuplicateObjects(anmälda);
+
+		if (duplicates > 1) {
+			console.log(duplicates)
+		}
 
 		modal.addComponents(row);
 		await interaction.showModal(modal);

@@ -1,7 +1,8 @@
 module.exports.updatePlayerCount = async (interaction) => {
-	const playerCount = Number(interaction.message.embeds[0].fields[4].value);
+	const playerCount = Number(interaction.message.embeds[0].fields[3].value);
 
-	const newEmbed = (interaction.message.embeds[0].fields[4].value = playerCount + 1);
+	interaction.message.embeds[0].fields.find((f) => f.name === "Antal Anmälda Spelare").value =
+		playerCount + 1;
 
-	//interaction.update({ embeds: [newEmbed] });
+	interaction.message.edit({ embeds: [interaction.message.embeds[0]] }); //components: [interaction.message.components[0]]
 };

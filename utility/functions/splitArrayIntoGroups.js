@@ -1,16 +1,22 @@
 module.exports.splitArrayIntoGroups = (array) => {
-	const result = new Array();
-	let group = new Array();
+	const result = [];
+	let group = [];
+	let groupSize = 0;
+
 	for (let i = 0; i < array.length; i++) {
-		if (group.length < 5) {
-			group.push(array[i].name);
-		} else {
+		group.push(array[i].name);
+		groupSize++;
+
+		if (groupSize === 5) {
 			result.push(group);
-			group = [array[i].name];
+			group = [];
+			groupSize = 0;
 		}
 	}
-	if (group.length > 0) {
+
+	if (groupSize > 0) {
 		result.push(group);
 	}
+
 	return { groups: result, count: result.length };
 };

@@ -1,17 +1,18 @@
 const mongo = require("../../mongo");
 const anmälningSchema = require("../../../schemas/anmälningSchema");
 
-module.exports.removeId = async (messageId, userId, name) => {
+module.exports.removeId = async (messageId, userId) => {
+	console.log(messageId, userId);
+
 	return await mongo().then(async (mongoose) => {
 		try {
-
 			result = await anmälningSchema.findOneAndUpdate(
 				{
 					messageId: messageId,
 				},
 				{
 					$pull: {
-						anmälda: { userId, name },
+						anmälda: { userId },
 					},
 				},
 				{
