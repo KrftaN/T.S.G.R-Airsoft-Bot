@@ -1,17 +1,11 @@
-const {
-	SlashCommandBuilder,
-	ActionRowBuilder,
-	ButtonBuilder,
-	ButtonStyle,
-	EmbedBuilder,
-} = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
 const { scheduleJob, RecurrenceRule } = require("node-schedule");
 const { DateTime, Settings } = require("luxon");
 Settings.defaultZone = "Europe/Stockholm";
 const {
 	startSpelanmälningar,
 } = require("../../utility/database-functions/spelanmälning/startSpelanmälningar");
-const { updateAnmälningEmbed } = require("../../utility/functions/updateAnmälningEmbed");
+const { updateAnmälningEmbed } = require("../../utility/functions/updatePlayerCount");
 module.exports = {
 	name: "INITIERA_SPELANMÄLNING",
 	async execute(interaction, bot) {
@@ -25,10 +19,7 @@ module.exports = {
 			`${new Date().getFullYear()}-${datum.split("/")[1]}-${datum.split("/")[0]}T00:00`
 		).toMillis();
 
-		const displayDate = DateTime.fromMillis(datumMillies).toLocaleString({
-			month: "numeric",
-			day: "numeric",
-		});
+		const displayDate = datum;
 
 		const embed = new EmbedBuilder()
 			.setTitle(`Anmälning till airsoft spel`)
@@ -50,12 +41,9 @@ module.exports = {
 					value: `${displayDate}`,
 					inline: true,
 				},
-				{
-					name: "Anatal dagar till spel",
-					value: "`29 dagar`",
-					inline: true,
-				}
+				{ name: "Antal Anmälda Spelare", value: "0" }
 			)
+
 			.setColor("#ffa500")
 			.setFooter({
 				text: "Placeholder",
@@ -65,10 +53,10 @@ module.exports = {
 
 		const row = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
-				.setCustomId("ANMÄLNING_PREVIOUS_PAGE")
-				.setStyle(ButtonStyle.Primary)
+				.setCustomId("ANMÄLNING_VISA_SPELARE")
+				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(false)
-				.setEmoji("⬅️"),
+				.setLabel("Anmälda spelare"),
 			new ButtonBuilder()
 				.setCustomId("ANMÄLNING_ANMÄL")
 				.setLabel("Anmäl")
@@ -78,19 +66,14 @@ module.exports = {
 				.setCustomId("ANMÄLNING_AVANMÄL")
 				.setLabel("Avanmäl")
 				.setStyle(ButtonStyle.Danger)
-				.setDisabled(false),
-			new ButtonBuilder()
-				.setCustomId("ANMÄLNING_NEXT_PAGE")
-				.setStyle(ButtonStyle.Primary)
 				.setDisabled(false)
-				.setEmoji("➡️")
 		);
 
 		await interaction.reply({ components: [row], content: "@everyone", embeds: [embed] });
 
 		const { id } = await interaction.fetchReply();
 
-		await startSpelanmälningar(id, displayDate, datumMillies, plats, länk, beskrivning);
+		await startSpelanmälningar(id, displayDate, datumMillies, plats, länk, pris, beskrivning);
 
 		const rule = new RecurrenceRule();
 		rule.hour = 2;

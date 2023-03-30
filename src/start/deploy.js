@@ -21,6 +21,7 @@ module.exports.deploy = async (bot) => {
 
 	rest
 		.put(Routes.applicationGuildCommands(bot.user.id, guildId), { body: commands })
+		//.put(Routes.applicationGuildCommands(bot.user.id, "1090731877977043095"), { body: commands })
 		.then(() => console.log("-> Successfully registered application commands."))
 		.catch(console.error);
 };

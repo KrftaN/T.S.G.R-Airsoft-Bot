@@ -8,111 +8,107 @@ const {
 	TextInputStyle,
 	TextInputBuilder,
 } = require("discord.js");
-const { scheduleJob, RecurrenceRule } = require("node-schedule");
-const { DateTime, Settings } = require("luxon");
-Settings.defaultZone = "Europe/Stockholm";
+const { splitArrayIntoGroups } = require("../../utility/functions/splitArrayIntoGroups");
 
 module.exports = {
 	name: "test",
 	creator: true,
 	data: new SlashCommandBuilder().setName("test").setDescription("test"),
-	/*.addStringOption((option) => {
-			return (option = option.setName("titel").setDescription("Spelets titel.").setRequired(true));
-		})
-		.addStringOption((option) => {
-			return (option = option.setName("datum").setDescription("Format: DD/MM").setRequired(true));
-		}).addStringOption((option) => {
-			return (option = option.setName("beskrivning").setDescription("Lägg till eventuell extra information om evenemanget.").setRequired(true));
-		})
-		.addIntegerOption((option) => {
-			return (option = option.setName("pris").setDescription("Pris till airsoftspelet.").setRequired(true));
-		}).addStringOption((option) => {
-			return (option = option.setName("plats").setDescription("Plats för airsoftspelet.").setRequired(true));
-		}).addStringOption((option) => {
-			return (option = option.setName("google-map-länk").setDescription("Lägg till eventuell google map länk för platsen.").setRequired(false));
-		}), */ async execute(interaction, bot) {
-		const datumInput = "07/07"; //options.getString("datum");
-		const titel = "Påskspel"; //options.getString("titel");
-		const pris = "25"; //options.getInteger("pris");
-		const beskrivning = "Påskspel den 7/7. Spelstart kl 9"; //options.getString("beskrivning");
-		const plats = "Grimarp"; //options.getString("plats");
-		const googleMapLänk =
-			"https://www.google.com/maps/place/T.S.R.G+Airsoft/@56.7716145,14.0624222,17z/data=!3m1!4b1!4m6!3m5!1s0x465129e64428cd65:0xc4bcdf44b0e9ce91!8m2!3d56.7716116!4d14.0646109!16s%2Fg%2F11t9w3k40z"; //options.getString("google-map-länk")
+	async execute(interaction, bot) {
+		global.currentPage = new Object();
 
-		const datum = DateTime.fromISO(
-			`${new Date().getFullYear()}-${datumInput.split("/")[1]}-${datumInput.split("/")[0]}T00:00`
-		).toMillis();
+		global.currentPage[interaction.user.id] = 1;
 
-		const displayDate = DateTime.fromMillis(datum).toLocaleString({
-			month: "numeric",
-			day: "numeric",
-		});
+		const names = [
+			"Emma Smith",
+			"William Johnson",
+			"Olivia Brown",
+			"Noah Davis",
+			"Ava Wilson",
+			"James Garcia",
+			"Isabella Martinez",
+			"Ethan Anderson",
+			"Sophia Taylor",
+			"Mason Thomas",
+			"Charlotte Lee",
+			"Jacob Perez",
+			"Amelia Robinson",
+			"Benjamin Jackson",
+			"Mia Green",
+			"Michael Baker",
+			"Abigail Reed",
+			"Elijah Nelson",
+			"Elizabeth Hill",
+			"Daniel Adams",
+			"Evelyn Campbell",
+			"Matthew Parker",
+			"Harper Evans",
+			"Logan Edwards",
+			"Grace Collins",
+			"Lucas Stewart",
+			"Chloe Flores",
+			"Jackson Morris",
+			"Madison Sanchez",
+			"Alexander Rogers",
+			"Emily Phillips",
+			"Carter Cooper",
+			"Avery Torres",
+			"Ryan Peterson",
+			"Lily Ramirez",
+			"Luke Wright",
+			"Natalie Foster",
+			"Owen Howard",
+			"Aria Carter",
+			"William Hughes",
+			"Audrey Diaz",
+		];
+
+		const { groups } = await splitArrayIntoGroups(names);
+		const amountOfPages = Math.ceil(count / 15);
 
 		const embed = new EmbedBuilder()
-			.setTitle(`${titel}`)
-			.setDescription(`${beskrivning}`)
+			.setTitle(`Anmälda spelare:`)
+			//.setDescription(`${array1.join("\n")} ${array1.join("\n")} ${array1.join("\n")}`)
 			.setThumbnail("https://i.imgur.com/AfFp7pu.png")
 			.addFields(
 				{
-					name: "Plats",
-					value: `[${plats}](${googleMapLänk})`,
+					name: "Spelare",
+					value: `${groups[0].join("\n")}`,
 					inline: true,
 				},
 				{
-					name: "Pris",
-					value: `${pris}kr`,
+					name: "Spelare",
+					value: `${groups[1].join("\n")}`,
 					inline: true,
 				},
 				{
-					name: "Datum",
-					value: `${displayDate}`,
-					inline: true,
-				},
-				{
-					name: "Anatal dagar till spel",
-					value: "`29 dagar`",
+					name: "Spelare",
+					value: `${groups[2].join("\n")}`,
 					inline: true,
 				}
 			)
 			.setColor("#ffa500")
 			.setFooter({
-				text: "Placeholder",
+				text: `Sida ${global.currentPage[interaction.user.id]} av ${amountOfPages}`,
 				iconURL: "https://i.imgur.com/AfFp7pu.png",
 			})
 			.setTimestamp(new Date());
-
 		const row = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
 				.setCustomId("ANMÄLNING_PREVIOUS_PAGE")
-				.setStyle(ButtonStyle.Primary)
+				.setLabel("Förra sidan")
+				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(false)
 				.setEmoji("⬅️"),
 			new ButtonBuilder()
-				.setCustomId("ANMÄLNING_ANMÄL")
-				.setLabel("Anmäl")
-				.setStyle(ButtonStyle.Success)
-				.setDisabled(false),
-			new ButtonBuilder()
-				.setCustomId("ANMÄLNING_AVANMÄL")
-				.setLabel("Avanmäl")
-				.setStyle(ButtonStyle.Danger)
-				.setDisabled(false),
-			new ButtonBuilder()
 				.setCustomId("ANMÄLNING_NEXT_PAGE")
-				.setStyle(ButtonStyle.Primary)
+				.setStyle(ButtonStyle.Secondary)
+				.setLabel("Nästa sida")
 				.setDisabled(false)
 				.setEmoji("➡️")
 		);
 
-		const rule = new RecurrenceRule();
-		rule.hour = 2;
-		rule.minute = 0;
-		rule.tz = "Etc/UTC";
-		scheduleJob(rule, () => {
-			console.log("A new day has begun in the UTC timezone!");
-		});
-
-		await interaction.reply({ components: [row], embeds: [embed] });
+		await interaction.reply({ components: [row], embeds: [embed], ephemeral: true });
 	},
 };
 //users2.join("\n")

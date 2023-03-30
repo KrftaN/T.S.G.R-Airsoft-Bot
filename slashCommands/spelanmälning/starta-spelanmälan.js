@@ -35,7 +35,7 @@ module.exports = {
 		const fourthRow = new ActionRowBuilder().addComponents(
 			new TextInputBuilder()
 				.setCustomId("STARTA_SPELANMÄLNING_PLATS")
-				.setLabel("Plats")
+				.setLabel("Plats.")
 				.setPlaceholder("Plats")
 				.setStyle(TextInputStyle.Short)
 		);
@@ -43,7 +43,7 @@ module.exports = {
 		const fifthRow = new ActionRowBuilder().addComponents(
 			new TextInputBuilder()
 				.setCustomId("STARTA_SPELANMÄLNING_LÄNK")
-				.setLabel("Google Map länk")
+				.setLabel("Google Map länk.")
 				.setPlaceholder("Länk")
 				.setStyle(TextInputStyle.Short)
 		);

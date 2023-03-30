@@ -23,7 +23,15 @@ const anmälningSchema = mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		pris: {
+			type: String,
+			required: true,
+		},
 		beskrivning: {
+			type: String,
+			required: true,
+		},
+		uniqueId: {
 			type: String,
 			required: true,
 		},
