@@ -26,10 +26,17 @@ module.exports = {
 		);
 
 		const { anmälda, uniqueId } = await spelanmälningarData(interaction.message.id);
-		const duplicates = await findDuplicateObjects(anmälda);
+		const duplicates = await findDuplicateObjects(anmälda, interaction.user.id);
 
-		console.log(duplicates);
-
+		if (
+			!anmälda.find((obj) => {
+				if (obj.userId == interaction.user.id) return true;
+			})
+		)
+			return await interaction.reply({
+				embeds: [new EmbedBuilder().setTitle("Du är inte anmäld!").setColor("#FF0000")],
+				ephemeral: true,
+			});
 		if (duplicates.length > 1) {
 			const selectMenu = new StringSelectMenuBuilder()
 				.setCustomId(`ANMÄLNING_AVANMÄL_SELECTMENU ${uniqueId}`)

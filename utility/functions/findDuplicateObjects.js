@@ -1,13 +1,18 @@
-module.exports.findDuplicateObjects = (arr) => {
-  const seen = [];
-  const duplicates = [];
-  for (let i = 0; i < arr.length; i++) {
-    const obj = arr[i];
-    if (seen.some((seenObj) => seenObj.messageId === obj.messageId)) {
-      duplicates.push(obj);
-    } else {
-      seen.push(obj);
-    }
-  }
-  return seen.concat(duplicates);
+module.exports.findDuplicateObjects = (arr, userIdToFind) => {
+	const duplicates = [];
+	const uniqueIds = new Set();
+
+	arr.forEach((obj) => {
+		const userId = obj.userId;
+		if (userId === userIdToFind) {
+			if (uniqueIds.has(userId)) {
+				duplicates.push(obj);
+			} else {
+				uniqueIds.add(userId);
+				duplicates.push(obj); // Add the first occurrence of the userId as well
+			}
+		}
+	});
+
+	return duplicates;
 };

@@ -14,8 +14,6 @@ module.exports = {
 
 			const shuffledNames = await shuffleArray(names);
 			for (let i = 0; i < Number(namn.split(" ")[1]); i++) {
-				console.log(i);
-
 				await addId(
 					interaction.message.id,
 					shuffledNames[i].id,
@@ -35,7 +33,7 @@ module.exports = {
 		await addId(interaction.message.id, interaction.user.id, namn, interactionToSend);
 
 		await interaction.reply({
-			embeds: [new EmbedBuilder().setTitle(`\`${namn}\``).setColor("#00ff00")],
+			embeds: [new EmbedBuilder().setTitle(`\`${namn}\` har blivit anmäld.`).setColor("#00ff00")],
 			ephemeral: true,
 		});
 	},
