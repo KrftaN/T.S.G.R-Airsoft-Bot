@@ -11,7 +11,6 @@ module.exports = {
 		const { anmälda, uniqueId } = await spelanmälningarData(interaction.message.id);
 
 		const { groups, count } = await splitArrayIntoGroups(anmälda);
-		console.log(groups);
 
 		const amountOfPages = Math.ceil(count / 3);
 

@@ -1,4 +1,4 @@
-const fs = require("node:fs");
+/* const fs = require("node:fs");
 const { Routes, REST } = require("discord.js");
 const { guildId, token } = require("../../jsonFiles/config.json");
 
@@ -24,11 +24,9 @@ module.exports.deploy = async (bot) => {
 		//.put(Routes.applicationGuildCommands(bot.user.id, "1090731877977043095"), { body: commands })
 		.then(() => console.log("-> Successfully registered application commands."))
 		.catch(console.error);
-};
-/* 
+}; */
 const fs = require("node:fs");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
+const { Routes, REST } = require("discord.js");
 const { guildId, token } = require("../../jsonFiles/config.json");
 
 module.exports.deploy = async (bot) => {
@@ -49,10 +47,7 @@ module.exports.deploy = async (bot) => {
 	const rest = new REST({ version: "9" }).setToken(token);
 
 	rest
-		.put(
-	Routes.applicationCommands(bot.user.id),
-	{ body: commands })
+		.put(Routes.applicationCommands(bot.user.id), { body: commands })
 		.then(() => console.log("Successfully registered application commands."))
 		.catch(console.error);
 };
- */

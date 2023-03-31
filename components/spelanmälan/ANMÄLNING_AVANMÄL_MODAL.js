@@ -8,7 +8,7 @@ module.exports = {
 
 		if (svar.toLowerCase() === "avanmäl") {
 			try {
-				await removeId(interaction.message.id, interaction.user.id);
+				await removeId(interaction.message.id, interaction.user.id, interaction);
 				await interaction.reply({
 					embeds: [new EmbedBuilder().setTitle("Du är nu avanmäld!").setColor("#00ff00")],
 					ephemeral: true,

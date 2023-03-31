@@ -3,6 +3,7 @@ const {
 	ModalBuilder,
 	TextInputBuilder,
 	TextInputStyle,
+	StringSelectMenuBuilder,
 	EmbedBuilder,
 } = require("discord.js");
 const { findDuplicateObjects } = require("../../utility/functions/findDuplicateObjects");
@@ -24,11 +25,22 @@ module.exports = {
 				.setPlaceholder("AVANMÄL")
 		);
 
-		const { anmälda } = await spelanmälningarData(interaction.message.id);
+		const { anmälda, uniqueId } = await spelanmälningarData(interaction.message.id);
 		const duplicates = await findDuplicateObjects(anmälda);
 
-		if (duplicates > 1) {
-			console.log(duplicates)
+		console.log(duplicates);
+
+		if (duplicates.length > 1) {
+			const selectMenu = new StringSelectMenuBuilder()
+				.setCustomId(`ANMÄLNING_AVANMÄL_SELECTMENU ${uniqueId}`)
+				.setPlaceholder("Välj ett namn")
+				.addOptions(duplicates.map((obj) => ({ label: obj.name, value: obj.name })));
+			const row = new ActionRowBuilder().addComponents(selectMenu);
+			return await interaction.reply({
+				embeds: [new EmbedBuilder().setTitle("Vem vill du avanmäla?").setColor("#ffa500")],
+				ephemeral: true,
+				components: [row],
+			});
 		}
 
 		modal.addComponents(row);

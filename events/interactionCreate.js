@@ -6,9 +6,9 @@ module.exports = {
 	async execute(interaction, bot) {
 		const { commandName } = interaction;
 
-		if (!interaction.isCommand() && !interaction.isButton() && !interaction.isModalSubmit()) return;
+		if (!interaction.isCommand() && !interaction.isButton() && !interaction.isModalSubmit() && !interaction.isSelectMenu()) return;
 
-		if (interaction.isButton() || interaction.isModalSubmit()) {
+		if (interaction.isButton() || interaction.isModalSubmit() || interaction.isSelectMenu()) {
 			handleComponents(interaction, bot);
 		}
 

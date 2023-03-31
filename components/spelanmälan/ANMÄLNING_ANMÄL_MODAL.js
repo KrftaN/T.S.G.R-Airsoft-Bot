@@ -35,7 +35,7 @@ module.exports = {
 		await addId(interaction.message.id, interaction.user.id, namn, interactionToSend);
 
 		await interaction.reply({
-			embeds: [new EmbedBuilder().setTitle("Du är nu anmäld!").setColor("#00ff00")],
+			embeds: [new EmbedBuilder().setTitle(`\`${namn}\``).setColor("#00ff00")],
 			ephemeral: true,
 		});
 	},

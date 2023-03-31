@@ -18,7 +18,9 @@ module.exports = {
 
 		if (currentPage - 1 === 0)
 			return interaction.reply({
-				embeds: [new EmbedBuilder().setTitle("Det finns inga flera sidor.").setColor("#FF0000")],
+				embeds: [
+					new EmbedBuilder().setTitle("Det finns inte en förgående sida!").setColor("#FF0000"),
+				],
 				ephemeral: true,
 			});
 

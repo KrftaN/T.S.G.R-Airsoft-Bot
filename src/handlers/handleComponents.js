@@ -3,7 +3,7 @@ module.exports.handleComponents = async (interaction, bot) => {
 
 	console.log(customId);
 
-	const component = bot.components.get(customId);
+	const component = bot.components.get(customId.split(" ")[0]);
 	try {
 		await component.execute(interaction, bot);
 	} catch (error) {
