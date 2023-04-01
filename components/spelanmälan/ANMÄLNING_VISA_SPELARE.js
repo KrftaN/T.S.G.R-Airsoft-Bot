@@ -11,13 +11,11 @@ module.exports = {
 		const { anmälda, uniqueId } = await spelanmälningarData(interaction.message.id);
 
 		const { groups, count } = await splitArrayIntoGroups(anmälda);
-
 		const amountOfPages = Math.ceil(count / 3);
 
 		const embed = new EmbedBuilder()
 			.setTitle(`Anmälda spelare:`)
-			//.setDescription(`${array1.join("\n")} ${array1.join("\n")} ${array1.join("\n")}`)
-			.setThumbnail("https://i.imgur.com/AfFp7pu.png")
+			.setThumbnail(bot.user.avatarURL({ dynamic: true }))
 			.addFields(
 				{
 					name: "Spelare",

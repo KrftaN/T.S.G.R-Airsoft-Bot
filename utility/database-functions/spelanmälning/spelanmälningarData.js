@@ -2,6 +2,8 @@ const mongo = require("../../mongo");
 const anmälningSchema = require("../../../schemas/anmälningSchema");
 
 module.exports.spelanmälningarData = async (messageId) => {
+	console.log(messageId);
+
 	return await mongo().then(async (mongoose) => {
 		try {
 			const result = await anmälningSchema.findOne({
@@ -10,7 +12,6 @@ module.exports.spelanmälningarData = async (messageId) => {
 
 			return {
 				datum: result.datum,
-				datumMillies: result.datumMillies,
 				plats: result.plats,
 				länk: result.länk,
 				pris: result.pris,

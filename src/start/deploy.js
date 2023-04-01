@@ -1,8 +1,10 @@
-/* const fs = require("node:fs");
+const fs = require("node:fs");
 const { Routes, REST } = require("discord.js");
 const { guildId, token } = require("../../jsonFiles/config.json");
 
 module.exports.deploy = async (bot) => {
+	console.log(1);
+
 	const commands = new Array();
 	const CommandFolders = fs.readdirSync("./slashCommands");
 
@@ -24,8 +26,9 @@ module.exports.deploy = async (bot) => {
 		//.put(Routes.applicationGuildCommands(bot.user.id, "1090731877977043095"), { body: commands })
 		.then(() => console.log("-> Successfully registered application commands."))
 		.catch(console.error);
-}; */
-const fs = require("node:fs");
+	("");
+};
+/* const fs = require("node:fs");
 const { Routes, REST } = require("discord.js");
 const { guildId, token } = require("../../jsonFiles/config.json");
 
@@ -51,3 +54,18 @@ module.exports.deploy = async (bot) => {
 		.then(() => console.log("Successfully registered application commands."))
 		.catch(console.error);
 };
+ */
+/* module.exports.deploy = async (bot) => {
+	const { Routes, REST } = require("discord.js");
+	const { guildId, token } = require("../../jsonFiles/config.json");
+
+	const rest = new REST({ version: "9" }).setToken(token);
+	rest.get(Routes.applicationCommands(bot.user.id)).then((data) => {
+		const promises = [];
+		for (const command of data) {
+			const deleteUrl = `${Routes.applicationCommands(bot.user.id)}/${command.id}`;
+			promises.push(rest.delete(deleteUrl));
+		}
+		return Promise.all(promises);
+	});
+}; */

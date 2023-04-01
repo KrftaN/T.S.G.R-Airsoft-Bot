@@ -1,11 +1,10 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
-const { scheduleJob, RecurrenceRule } = require("node-schedule");
+/* const { scheduleJob, RecurrenceRule } = require("node-schedule");
 const { DateTime, Settings } = require("luxon");
-Settings.defaultZone = "Europe/Stockholm";
+Settings.defaultZone = "Europe/Stockholm"; */
 const {
 	startSpelanmälningar,
 } = require("../../utility/database-functions/spelanmälning/startSpelanmälningar");
-const { updateAnmälningEmbed } = require("../../utility/functions/updatePlayerCount");
 module.exports = {
 	name: "INITIERA_SPELANMÄLNING",
 	async execute(interaction, bot) {
@@ -15,16 +14,11 @@ module.exports = {
 		const länk = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_LÄNK");
 		const beskrivning = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_BESKRIVNING");
 
-		const datumMillies = DateTime.fromISO(
-			`${new Date().getFullYear()}-${datum.split("/")[1]}-${datum.split("/")[0]}T00:00`
-		).toMillis();
-
-		const displayDate = datum;
-
 		const embed = new EmbedBuilder()
 			.setTitle(`Anmälning till airsoft spel`)
 			.setDescription(`${beskrivning}`)
-			.setThumbnail("https://i.imgur.com/AfFp7pu.png")
+			.setThumbnail(bot.user.avatarURL({ dynamic: true }))
+			.setImage("https://i.imgur.com/PfIm2sY.jpeg")
 			.addFields(
 				{
 					name: "Plats",
@@ -38,7 +32,7 @@ module.exports = {
 				},
 				{
 					name: "Datum",
-					value: `${displayDate}`,
+					value: `${datum}`,
 					inline: true,
 				},
 				{ name: "Antal Anmälda Spelare", value: "0" }
@@ -46,8 +40,8 @@ module.exports = {
 
 			.setColor("#ffa500")
 			.setFooter({
-				text: "Placeholder",
-				iconURL: "https://i.imgur.com/AfFp7pu.png",
+				text: "Tactical Squad of Random Guys",
+				iconURL: bot.user.avatarURL({ dynamic: true }),
 			})
 			.setTimestamp(new Date());
 
@@ -70,18 +64,8 @@ module.exports = {
 		);
 
 		await interaction.reply({ components: [row], content: "@everyone", embeds: [embed] });
-
 		const { id } = await interaction.fetchReply();
-
-		await startSpelanmälningar(id, displayDate, datumMillies, plats, länk, pris, beskrivning);
-
-		const rule = new RecurrenceRule();
-		rule.hour = 2;
-		rule.minute = 0;
-		rule.tz = "Etc/UTC";
-
-		scheduleJob(rule, () => {
-			updateAnmälningEmbed(id);
-		});
+		await startSpelanmälningar(id, datum, plats, länk, pris, beskrivning);
 	},
 };
+

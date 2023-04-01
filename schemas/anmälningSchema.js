@@ -11,17 +11,13 @@ const anmälningSchema = mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		datumMillies: {
-			type: String,
-			required: true,
-		},
 		plats: {
 			type: String,
 			required: true,
 		},
 		länk: {
 			type: String,
-			required: true,
+			required: false,
 		},
 		pris: {
 			type: String,

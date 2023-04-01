@@ -13,7 +13,9 @@ const { splitArrayIntoGroups } = require("../../utility/functions/splitArrayInto
 module.exports = {
 	name: "test",
 	creator: true,
-	data: new SlashCommandBuilder().setName("test").setDescription("test"),
+	data: new SlashCommandBuilder()
+		.setName("test")
+			.setDescription("Endast för 'development' ändamål."),
 	async execute(interaction, bot) {
 		global.currentPage = new Object();
 

@@ -7,15 +7,20 @@ const {
 	PermissionFlagsBits,
 } = require("discord.js");
 
+const {spelanmälningarData} = require("../../utility/database-functions/spelanmälning/spelanmälningarData")
+
 module.exports = {
-	name: "starta-spelanmälning",
+	name: "redigera-spelanmälan",
 	creator: false,
 	permissions: "ADMINISTRATOR",
 	data: new SlashCommandBuilder()
-		.setName("starta-spelanmälning")
+		.setName("redigera-spelanmälan")
 		.setDescription("Initiera spelanmälning.")
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 	async execute(interaction, bot) {
+
+		const {datum, plats, länk, beskrivning, pris} = spelanmälningarData()
+
 		const modal = new ModalBuilder()
 			.setCustomId("INITIERA_SPELANMÄLNING")
 			.setTitle("Initiera spelanmälning");

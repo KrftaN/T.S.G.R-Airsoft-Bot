@@ -26,7 +26,6 @@ module.exports = {
 		);
 
 		const { anmälda, uniqueId } = await spelanmälningarData(interaction.message.id);
-		const duplicates = await findDuplicateObjects(anmälda, interaction.user.id);
 
 		if (
 			!anmälda.find((obj) => {
@@ -37,6 +36,10 @@ module.exports = {
 				embeds: [new EmbedBuilder().setTitle("Du är inte anmäld!").setColor("#FF0000")],
 				ephemeral: true,
 			});
+
+		const duplicates = await findDuplicateObjects(anmälda, interaction.user.id);
+
+		console.log(duplicates);
 		if (duplicates.length > 1) {
 			const selectMenu = new StringSelectMenuBuilder()
 				.setCustomId(`ANMÄLNING_AVANMÄL_SELECTMENU ${uniqueId}`)
