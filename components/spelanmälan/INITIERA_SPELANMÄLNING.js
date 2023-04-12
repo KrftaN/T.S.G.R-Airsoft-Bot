@@ -1,7 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
-/* const { scheduleJob, RecurrenceRule } = require("node-schedule");
-const { DateTime, Settings } = require("luxon");
-Settings.defaultZone = "Europe/Stockholm"; */
+const { uniqueId } = require("../../utility/functions/uniqueId");
+const { halveString } = require("../../utility/functions/halveString");
 const {
 	startSpelanmälningar,
 } = require("../../utility/database-functions/spelanmälning/startSpelanmälningar");
@@ -13,6 +12,7 @@ module.exports = {
 		const plats = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_PLATS");
 		const länk = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_LÄNK");
 		const beskrivning = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_BESKRIVNING");
+		const messageUniqueId = await halveString(uniqueId());
 
 		const embed = new EmbedBuilder()
 			.setTitle(`Anmälning till airsoft spel`)
@@ -40,7 +40,7 @@ module.exports = {
 
 			.setColor("#ffa500")
 			.setFooter({
-				text: "Tactical Squad of Random Guys",
+				text: `Tactical Squad of Random Guys | id: ${messageUniqueId}`,
 				iconURL: bot.user.avatarURL({ dynamic: true }),
 			})
 			.setTimestamp(new Date());
@@ -65,7 +65,16 @@ module.exports = {
 
 		await interaction.reply({ components: [row], content: "@everyone", embeds: [embed] });
 		const { id } = await interaction.fetchReply();
-		await startSpelanmälningar(id, datum, plats, länk, pris, beskrivning);
+		await startSpelanmälningar(
+			id,
+			datum,
+			plats,
+			länk,
+			pris,
+			beskrivning,
+			interaction.guild.id,
+			interaction.channel.id,
+			messageUniqueId
+		);
 	},
 };
-

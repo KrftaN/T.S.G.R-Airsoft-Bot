@@ -18,9 +18,7 @@ module.exports = {
 
 		if (currentPage + 1 > amountOfPages)
 			return interaction.reply({
-				embeds: [
-					new EmbedBuilder().setTitle("Det finns inga flera sidor!").setColor("#FF0000"),
-				],
+				embeds: [new EmbedBuilder().setTitle("Det finns inga flera sidor!").setColor("#FF0000")],
 				ephemeral: true,
 			});
 
@@ -28,26 +26,38 @@ module.exports = {
 
 		const embed = new EmbedBuilder()
 			.setTitle(`Anmälda spelare:`)
-			.setThumbnail("https://i.imgur.com/AfFp7pu.png")
+			.setThumbnail(bot.user.avatarURL({ dynamic: true }))
 			.addFields(
 				{
 					name: "Spelare",
 					value: `${
-						groups[0 + 3 * (currentPage - 1)] ? groups[0 + 3 * (currentPage - 1)].join("\n") : "-"
+						groups[0 + 3 * (currentPage - 1)]
+							? groups[0 + 3 * (currentPage - 1)]
+									.map((name, index) => `${index + 1 + (currentPage - 1) * 15}. ${name}`)
+									.join("\n")
+							: "-"
 					}`,
 					inline: true,
 				},
 				{
 					name: "Spelare",
 					value: `${
-						groups[1 + 3 * (currentPage - 1)] ? groups[1 + 3 * (currentPage - 1)].join("\n") : "-"
+						groups[1 + 3 * (currentPage - 1)]
+							? groups[1 + 3 * (currentPage - 1)]
+									.map((name, index) => `${index + 6 + (currentPage - 1) * 15}. ${name}`)
+									.join("\n")
+							: "-"
 					}`,
 					inline: true,
 				},
 				{
 					name: "Spelare",
 					value: `${
-						groups[2 + 3 * (currentPage - 1)] ? groups[2 + 3 * (currentPage - 1)].join("\n") : "-"
+						groups[2 + 3 * (currentPage - 1)]
+							? groups[2 + 3 * (currentPage - 1)]
+									.map((name, index) => `${index + 11 + (currentPage - 1) * 15}. ${name}`)
+									.join("\n")
+							: "-"
 					}`,
 					inline: true,
 				}
@@ -55,7 +65,7 @@ module.exports = {
 			.setColor("#ffa500")
 			.setFooter({
 				text: `Sida ${currentPage} av ${amountOfPages} | id: ${uniqueId}`,
-				iconURL: "https://i.imgur.com/AfFp7pu.png",
+				iconURL: bot.user.avatarURL({ dynamic: true }),
 			})
 			.setTimestamp(new Date());
 		const row = new ActionRowBuilder().addComponents(

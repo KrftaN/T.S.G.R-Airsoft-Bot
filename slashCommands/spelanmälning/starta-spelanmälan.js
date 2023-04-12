@@ -10,11 +10,10 @@ const {
 module.exports = {
 	name: "starta-spelanmälning",
 	creator: false,
-	permissions: "ADMINISTRATOR",
 	data: new SlashCommandBuilder()
 		.setName("starta-spelanmälning")
 		.setDescription("Initiera spelanmälning.")
-		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction, bot) {
 		const modal = new ModalBuilder()
 			.setCustomId("INITIERA_SPELANMÄLNING")

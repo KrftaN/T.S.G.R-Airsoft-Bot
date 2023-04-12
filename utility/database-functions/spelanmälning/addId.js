@@ -2,7 +2,7 @@ const mongo = require("../../mongo");
 const anmälningSchema = require("../../../schemas/anmälningSchema");
 const { updatePlayerCount } = require("../../functions/updatePlayerCount");
 
-module.exports.addId = async (messageId, userId, name, interaction) => {
+module.exports.addId = async (messageId, userId, name, interaction, tag) => {
 	return await mongo().then(async (mongoose) => {
 		try {
 			console.log("Inserted name!");
@@ -14,7 +14,7 @@ module.exports.addId = async (messageId, userId, name, interaction) => {
 				},
 				{
 					$push: {
-						anmälda: { userId, name },
+						anmälda: { userId, name, tag },
 					},
 				},
 				{

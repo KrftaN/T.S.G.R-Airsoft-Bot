@@ -1,10 +1,4 @@
 const {
-	ActionRowBuilder,
-	ModalBuilder,
-	TextInputBuilder,
-	TextInputStyle,
-	MessageActionRow,
-	MessageSelectMenu,
 	EmbedBuilder,
 } = require("discord.js");
 

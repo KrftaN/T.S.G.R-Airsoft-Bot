@@ -26,8 +26,24 @@ module.exports.deploy = async (bot) => {
 		//.put(Routes.applicationGuildCommands(bot.user.id, "1090731877977043095"), { body: commands })
 		.then(() => console.log("-> Successfully registered application commands."))
 		.catch(console.error);
-	("");
 };
+	/* 	rest
+		.delete(
+			Routes.applicationGuildCommand(
+				"1089835656861204551",
+				"982697978059960361",
+				"1091445702137217116"
+			)
+		)
+		.then(() => console.log("Successfully deleted guild command"))
+		.catch(console.error);
+
+	// for global commands
+	rest
+		.delete(Routes.applicationCommand("1089835656861204551", "1091662430205136918"))
+		.then(() => console.log("Successfully deleted application command"))
+		.catch(console.error); */
+
 /* const fs = require("node:fs");
 const { Routes, REST } = require("discord.js");
 const { guildId, token } = require("../../jsonFiles/config.json");

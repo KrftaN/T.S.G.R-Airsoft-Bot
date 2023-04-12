@@ -31,6 +31,14 @@ const anmälningSchema = mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		guildId: {
+			type: String,
+			required: true,
+		},
+		channelId: {
+			type: String,
+			required: true,
+		},
 		anmälda: [Object],
 	},
 

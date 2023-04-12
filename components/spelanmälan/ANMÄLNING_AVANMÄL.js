@@ -13,20 +13,7 @@ const {
 module.exports = {
 	name: "ANMÄLNING_AVANMÄL",
 	async execute(interaction, bot) {
-		const modal = new ModalBuilder()
-			.setCustomId("ANMÄLNING_AVANMÄL_MODAL")
-			.setTitle("Är du säker att du vill avanmäla dig?");
-
-		const row = new ActionRowBuilder().addComponents(
-			new TextInputBuilder()
-				.setCustomId("AVANMÄLAN_SVAR")
-				.setLabel("Skriv 'AVANMÄL' om du vill avanmäla dig.")
-				.setStyle(TextInputStyle.Short)
-				.setPlaceholder("AVANMÄL")
-		);
-
 		const { anmälda, uniqueId } = await spelanmälningarData(interaction.message.id);
-
 		if (
 			!anmälda.find((obj) => {
 				if (obj.userId == interaction.user.id) return true;
@@ -38,22 +25,32 @@ module.exports = {
 			});
 
 		const duplicates = await findDuplicateObjects(anmälda, interaction.user.id);
-
-		console.log(duplicates);
 		if (duplicates.length > 1) {
-			const selectMenu = new StringSelectMenuBuilder()
-				.setCustomId(`ANMÄLNING_AVANMÄL_SELECTMENU ${uniqueId}`)
-				.setPlaceholder("Välj ett namn")
-				.addOptions(duplicates.map((obj) => ({ label: obj.name, value: obj.name })));
-			const row = new ActionRowBuilder().addComponents(selectMenu);
+			const row = new ActionRowBuilder().addComponents(
+				new StringSelectMenuBuilder()
+					.setCustomId(`ANMÄLNING_AVANMÄL_SELECTMENU ${uniqueId}`)
+					.setPlaceholder("Välj ett namn")
+					.addOptions(duplicates.map((obj) => ({ label: obj.name, value: obj.name })))
+			);
 			return await interaction.reply({
 				embeds: [new EmbedBuilder().setTitle("Vem vill du avanmäla?").setColor("#ffa500")],
 				ephemeral: true,
 				components: [row],
 			});
 		}
+		const modal = new ModalBuilder()
+			.setCustomId("ANMÄLNING_AVANMÄL_MODAL")
+			.setTitle("Är du säker att du vill avanmäla dig?");
 
-		modal.addComponents(row);
+		modal.addComponents(
+			new ActionRowBuilder().addComponents(
+				new TextInputBuilder()
+					.setCustomId("AVANMÄLAN_SVAR")
+					.setLabel("Skriv 'AVANMÄL' om du vill avanmäla dig.")
+					.setStyle(TextInputStyle.Short)
+					.setPlaceholder("AVANMÄL")
+			)
+		);
 		await interaction.showModal(modal);
 	},
 };

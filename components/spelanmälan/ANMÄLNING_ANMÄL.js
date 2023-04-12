@@ -13,8 +13,6 @@ const wait = require("node:timers/promises").setTimeout;
 module.exports = {
 	name: "ANMÄLNING_ANMÄL",
 	async execute(interaction, bot) {
-		console.log(interaction.message.id);
-
 		if (interaction.isModalSubmit()) {
 			const namn = interaction.fields.getTextInputValue("ANMÄLAN_NAMN");
 			const interactionToSend = interaction;
@@ -28,7 +26,8 @@ module.exports = {
 						interaction.message.id,
 						shuffledNames[i].id,
 						shuffledNames[i].namn,
-						interactionToSend
+						interactionToSend,
+						"Foo Bar#1337"
 					);
 				}
 				await interaction.followUp({
@@ -40,7 +39,13 @@ module.exports = {
 				return await interaction.deleteReply();
 			}
 
-			await addId(interaction.message.id, interaction.user.id, namn, interactionToSend);
+			await addId(
+				interaction.message.id,
+				interaction.user.id,
+				namn,
+				interactionToSend,
+				`${interaction.user.username}#${interaction.user.discriminator}`
+			);
 
 			await interaction.reply({
 				embeds: [new EmbedBuilder().setTitle(`\`${namn}\` har blivit anmäld.`).setColor("#00ff00")],
@@ -54,6 +59,7 @@ module.exports = {
 					.setCustomId("ANMÄLAN_NAMN")
 					.setMaxLength(30)
 					.setLabel("Ditt namn samt eventuellt lag:")
+					.setPlaceholder("OBS: flera anmälningar görs separata")
 					.setStyle(TextInputStyle.Short)
 			);
 

@@ -1,6 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
 const { splitArrayIntoGroups } = require("../../utility/functions/splitArrayIntoGroups");
-const { halveString } = require("../../utility/functions/halveString");
 const {
 	spelanmälningarData,
 } = require("../../utility/database-functions/spelanmälning/spelanmälningarData");
@@ -19,24 +18,30 @@ module.exports = {
 			.addFields(
 				{
 					name: "Spelare",
-					value: `${groups[0] ? groups[0].join("\n") : "-"}`,
+					value: `${
+						groups[0] ? groups[0].map((name, index) => `${index + 1}. ${name}`).join("\n") : "-"
+					}`,
 					inline: true,
 				},
 				{
 					name: "Spelare",
-					value: `${groups[1] ? groups[1].join("\n") : "-"}`,
+					value: `${
+						groups[1] ? groups[1].map((name, index) => `${index + 6}. ${name}`).join("\n") : "-"
+					}`,
 					inline: true,
 				},
 				{
 					name: "Spelare",
-					value: `${groups[2] ? groups[2].join("\n") : "-"}`,
+					value: `${
+						groups[2] ? groups[2].map((name, index) => `${index + 11}. ${name}`).join("\n") : "-"
+					}`,
 					inline: true,
 				}
 			)
 			.setColor("#ffa500")
 			.setFooter({
 				text: `Sida ${1} av ${amountOfPages} | id: ${uniqueId}`,
-				iconURL: "https://i.imgur.com/AfFp7pu.png",
+				iconURL: bot.user.avatarURL({ dynamic: true }),
 			})
 			.setTimestamp(new Date());
 		const row = new ActionRowBuilder().addComponents(
