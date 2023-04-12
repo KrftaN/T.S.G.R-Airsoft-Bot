@@ -1,7 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
 const { splitArrayIntoGroups } = require("../../utility/functions/splitArrayIntoGroups");
 const { anmälningar } = require("../../utility/database-functions/spelanmälning/anmälningar");
-const { extractId } = require("../../utility/functions/extractId");
 const { extractCurrentPageNumber } = require("../../utility/functions/extractCurrentPageNumber");
 
 module.exports = {
@@ -9,7 +8,7 @@ module.exports = {
 	async execute(interaction, bot) {
 		const footerText = interaction.message.embeds[0].footer.text;
 
-		const uniqueId = await extractId(footerText);
+		const uniqueId = interaction.customId.split(" ")[1];
 		let currentPage = Number(extractCurrentPageNumber(footerText));
 
 		const { anmälda } = await anmälningar(uniqueId);
@@ -66,19 +65,19 @@ module.exports = {
 			)
 			.setColor("#ffa500")
 			.setFooter({
-				text: `Sida ${currentPage} av ${amountOfPages} | id: ${uniqueId}`,
+				text: `Sida ${currentPage} av ${amountOfPages}`,
 				iconURL: bot.user.avatarURL({ dynamic: true }),
 			})
 			.setTimestamp(new Date());
 		const row = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
-				.setCustomId("ANMÄLNING_PREVIOUS_PAGE")
+				.setCustomId(`ANMÄLNING_PREVIOUS_PAGE ${interaction.customId.split(" ")[1]}`)
 				.setLabel("Förra sidan")
 				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(false)
 				.setEmoji("⬅️"),
 			new ButtonBuilder()
-				.setCustomId("ANMÄLNING_NEXT_PAGE")
+				.setCustomId(`ANMÄLNING_NEXT_PAGE ${interaction.customId.split(" ")[1]}`)
 				.setStyle(ButtonStyle.Secondary)
 				.setLabel("Nästa sida")
 				.setDisabled(false)

@@ -7,8 +7,7 @@ const {
 module.exports = {
 	name: "ANMÄLNING_VISA_SPELARE",
 	async execute(interaction, bot) {
-		const { anmälda, uniqueId } = await spelanmälningarData(interaction.message.id);
-
+		const { anmälda } = await spelanmälningarData(interaction.message.id);
 		const { groups, count } = await splitArrayIntoGroups(anmälda);
 		const amountOfPages = Math.ceil(count / 3);
 
@@ -40,25 +39,24 @@ module.exports = {
 			)
 			.setColor("#ffa500")
 			.setFooter({
-				text: `Sida ${1} av ${amountOfPages} | id: ${uniqueId}`,
+				text: `Sida ${1} av ${amountOfPages}`,
 				iconURL: bot.user.avatarURL({ dynamic: true }),
 			})
 			.setTimestamp(new Date());
 		const row = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
-				.setCustomId("ANMÄLNING_PREVIOUS_PAGE")
+				.setCustomId(`ANMÄLNING_PREVIOUS_PAGE ${interaction.customId.split(" ")[1]}`)
 				.setLabel("Förra sidan")
 				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(false)
 				.setEmoji("⬅️"),
 			new ButtonBuilder()
-				.setCustomId("ANMÄLNING_NEXT_PAGE")
+				.setCustomId(`ANMÄLNING_NEXT_PAGE ${interaction.customId.split(" ")[1]}`)
 				.setStyle(ButtonStyle.Secondary)
 				.setLabel("Nästa sida")
 				.setDisabled(false)
 				.setEmoji("➡️")
 		);
-
 		await interaction.reply({ components: [row], embeds: [embed], ephemeral: true });
 	},
 };

@@ -47,7 +47,7 @@ module.exports = {
 
 		const row = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
-				.setCustomId("ANMÄLNING_VISA_SPELARE")
+				.setCustomId(`ANMÄLNING_VISA_SPELARE ${messageUniqueId}`)
 				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(false)
 				.setLabel("Anmälda spelare"),

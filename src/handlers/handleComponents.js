@@ -2,6 +2,7 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports.handleComponents = async (interaction, bot) => {
 	const { customId } = interaction;
+	
 	const component = bot.components.get(customId.split(" ")[0]);
 	if (!component) return;
 
