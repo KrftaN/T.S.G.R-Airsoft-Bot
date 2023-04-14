@@ -30,6 +30,7 @@ module.exports = {
 				new StringSelectMenuBuilder()
 					.setCustomId(`ANMÄLNING_AVANMÄL_SELECTMENU ${uniqueId}`)
 					.setPlaceholder("Välj ett namn")
+					.setMaxValues(duplicates.length)
 					.addOptions(duplicates.map((obj) => ({ label: obj.name, value: obj.name })))
 			);
 			return await interaction.reply({

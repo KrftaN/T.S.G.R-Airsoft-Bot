@@ -19,7 +19,7 @@ module.exports = {
 
 		if (interaction.values[0] === "ADMINISTRATIVA_VERKTYG_REDIGERA") {
 			const modal = new ModalBuilder()
-				.setCustomId("ADMINISTRATIVA_VERKTYG_REDIGERA")
+				.setCustomId(`ADMINISTRATIVA_VERKTYG_REDIGERA ${interaction.customId.split(" ")[1]}`)
 				.setTitle("Redigera spelanmälningen");
 
 			const secondRow = new ActionRowBuilder().addComponents(

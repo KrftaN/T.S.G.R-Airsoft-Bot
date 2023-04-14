@@ -1,15 +1,17 @@
 const { EmbedBuilder } = require("discord.js");
-const { removeSeveralNames } = require("../../utility/database-functions/spelanmälning/removeSeveralNames");
+const {
+	removeSeveralNames,
+} = require("../../utility/database-functions/spelanmälning/removeSeveralNames");
 
 module.exports = {
-	name: "ANMÄLNING_AVANMÄL_SELECTMENU",
+	name: "ADMINISTRATIVA_VERKTYG_AVANMÄL_SELECTMENU",
 	async execute(interaction, bot) {
 		try {
 			await removeSeveralNames(interaction.values, interaction.customId.split(" ")[1], bot);
 			return interaction.update({
 				embeds: [
 					new EmbedBuilder()
-						.setTitle(`\`${interaction.values.join(", ")}\` är nu avanmäld!`)
+						.setTitle(`\`${interaction.values.join(", ")}\` är nu avanmäld[a]!`)
 						.setColor("#00FF00"),
 				],
 				components: [],

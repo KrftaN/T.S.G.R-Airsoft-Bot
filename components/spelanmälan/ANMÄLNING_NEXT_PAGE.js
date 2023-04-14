@@ -7,11 +7,8 @@ module.exports = {
 	name: "ANMÄLNING_NEXT_PAGE",
 	async execute(interaction, bot) {
 		const footerText = interaction.message.embeds[0].footer.text;
-
 		const uniqueId = interaction.customId.split(" ")[1];
 		let currentPage = Number(extractCurrentPageNumber(footerText));
-
-		console.log(currentPage);
 
 		const { anmälda } = await anmälningar(uniqueId);
 		const { groups, count } = await splitArrayIntoGroups(anmälda);

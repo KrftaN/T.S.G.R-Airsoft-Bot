@@ -22,7 +22,7 @@ module.exports = {
 			.addFields(
 				{
 					name: "Plats",
-					value: `[${plats}](${länk})`,
+					value: länk ? `[${plats}](${länk})` : `${plats}`,
 					inline: true,
 				},
 				{
@@ -63,7 +63,7 @@ module.exports = {
 				.setDisabled(false)
 		);
 
-		await interaction.reply({ components: [row], content: "@everyone", embeds: [embed] });
+		await interaction.reply({ components: [row], embeds: [embed] });
 		const { id } = await interaction.fetchReply();
 		await startSpelanmälningar(
 			id,

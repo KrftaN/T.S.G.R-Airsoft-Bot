@@ -8,15 +8,7 @@ module.exports.spelanmälningarData = async (messageId) => {
 				messageId,
 			});
 
-			return {
-				datum: result.datum,
-				plats: result.plats,
-				länk: result.länk,
-				pris: result.pris,
-				beskrivning: result.beskrivning,
-				uniqueId: result.uniqueId,
-				anmälda: result.anmälda,
-			};
+			return result;
 		} finally {
 			mongoose.connection.close();
 		}

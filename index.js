@@ -9,6 +9,7 @@ const bot = new Client({
 		GatewayIntentBits.GuildMembers,
 	],
 	partials: [Partials.Channel, Partials.Message, Partials.Reaction, Partials.User],
+	disableEveryone: false,
 });
 const { token } = require("./jsonFiles/config.json");
 const fs = require("fs");
