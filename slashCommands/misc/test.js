@@ -17,7 +17,24 @@ module.exports = {
 		.setName("test")
 		.setDescription("Endast för 'development' ändamål."),
 	async execute(interaction, bot) {
-		await interaction.reply({ content: "@everyone" });
+		bot.channels
+			.fetch("1086716757256974407")
+			.then((channel) => {
+				channel.messages
+					.fetch("1099382172542058576")
+					.then((interaction) => {
+						console.log(interaction.embeds[0].image.url);
+
+						/* const fieldName = "Antal Anmälda Spelare";
+						const fieldToUpdate = interaction.embeds[0].image.url;
+						fieldToUpdate.value = "";
+						interaction.edit({
+							embeds: [interaction.embeds[0]],
+						}); */
+					})
+					.catch(console.error);
+			})
+			.catch(console.error);
 	},
 };
 //users2.join("\n")

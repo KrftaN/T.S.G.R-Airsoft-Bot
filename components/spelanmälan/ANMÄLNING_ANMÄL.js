@@ -39,7 +39,7 @@ module.exports = {
 				return await interaction.deleteReply();
 			}
 
-			await addId(
+			const succeded = await addId(
 				interaction.message.id,
 				interaction.user.id,
 				namn,
@@ -47,10 +47,21 @@ module.exports = {
 				`${interaction.user.username}#${interaction.user.discriminator}`
 			);
 
-			await interaction.reply({
-				embeds: [new EmbedBuilder().setTitle(`\`${namn}\` har blivit anmäld.`).setColor("#00ff00")],
-				ephemeral: true,
-			});
+			if (succeded === true) {
+				await interaction.reply({
+					embeds: [
+						new EmbedBuilder().setTitle(`\`${namn}\` har blivit anmäld.`).setColor("#00ff00"),
+					],
+					ephemeral: true,
+				});
+			} else if (succeded === false) {
+				await interaction.reply({
+					embeds: [
+						new EmbedBuilder().setTitle(`⚠️ Du har redan anmält \`${namn}\`!!`).setColor("#FF0000"),
+					],
+					ephemeral: true,
+				});
+			}
 		} else {
 			const modal = new ModalBuilder().setCustomId("ANMÄLNING_ANMÄL").setTitle("Anmälan");
 

@@ -5,30 +5,24 @@ const { updatePlayerCountWithoutId } = require("../../functions/updatePlayerCoun
 module.exports.removeSeveralNames = async (names, uniqueId, bot) => {
 	return await mongo().then(async (mongoose) => {
 		try {
-			console.log(names, names.length);
-
-			const result = await anmälningSchema.findOneAndUpdate(
-				{
-					uniqueId,
-				},
-				{
-					$pull: {
-						anmälda: { name: { $in: names } },
+			await anmälningSchema
+				.findOneAndUpdate(
+					{
+						uniqueId,
 					},
-				},
-				{
-					upsert: true,
-					new: true,
-				}
-			);
-
-			await updatePlayerCountWithoutId(
-				result.channelId,
-				false,
-				result.messageId,
-				bot,
-				names.length
-			);
+					{
+						$pull: {
+							anmälda: { name: { $in: names } },
+						},
+					},
+					{
+						upsert: true,
+						new: true,
+					}
+				)
+				.then((result) => {
+					updatePlayerCountWithoutId(result.channelId, false, result.messageId, bot, names.length);
+				});
 		} finally {
 			mongoose.connection.close();
 		}

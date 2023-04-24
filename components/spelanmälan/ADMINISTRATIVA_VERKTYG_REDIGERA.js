@@ -1,7 +1,7 @@
 const {
 	spelanmälningarDataByUniqueId,
 } = require("../../utility/database-functions/spelanmälning/spelanmälningarDataByUniqueId");
-const { updateSpelanmälanEmbed } = require("../../utility/functions/updateSpelanmälanEmbed");
+const { updateSpelanmälan } = require("../../utility/database-functions/spelanmälning/updateSpelanmälan");
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
 
 		const { channelId, messageId, anmälda } = await spelanmälningarDataByUniqueId(uniqueId);
 
-		await updateSpelanmälanEmbed(
+		await updateSpelanmälan(
 			bot,
 			channelId,
 			messageId,
