@@ -68,7 +68,6 @@ module.exports = {
 			);
 
 			modal.addComponents(secondRow, thirdRow, fourthRow, fifthRow, sixthRow);
-
 			await interaction.showModal(modal);
 		} else if (interaction.values[0] === "ADMINISTRATIVA_VERKTYG_AVANMÄL") {
 			if (anmälda.length.length === 0)
@@ -87,6 +86,21 @@ module.exports = {
 				embeds: [new EmbedBuilder().setTitle("Vem/vilka vill du avanmäla?").setColor("#ffa500")],
 				components: [row],
 			});
+		} else if (interaction.values[0] === "ADMINISTRATIVA_VERKTYG_UPPDATERA_BILD") {
+			const modal = new ModalBuilder()
+				.setCustomId(`ADMINISTRATIVA_VERKTYG_UPDATERA_BILD ${interaction.customId.split(" ")[1]}`)
+				.setTitle("Updatera spelanmälningsbild");
+
+			const row = new ActionRowBuilder().addComponents(
+				new TextInputBuilder()
+					.setCustomId("LÄNK")
+					.setLabel("Länk")
+					.setPlaceholder("Länk")
+					.setStyle(TextInputStyle.Short)
+			);
+
+			modal.addComponents(row);
+			await interaction.showModal(modal);
 		}
 	},
 };
