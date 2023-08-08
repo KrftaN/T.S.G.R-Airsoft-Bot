@@ -19,8 +19,6 @@ module.exports = {
 	async execute(interaction, bot) {
 		const documents = await getSpelanmälningUniqueIds(interaction.guild.id);
 
-		console.log(interaction.guild.id)
-
 		const selectMenu = new StringSelectMenuBuilder()
 			.setCustomId("AVSLUTA_SPELANMÄLNING")
 			.setPlaceholder("Spelanmälningens ID")

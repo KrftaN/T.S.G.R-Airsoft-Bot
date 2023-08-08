@@ -1,6 +1,12 @@
-module.exports.updatePlayerCountWithoutId = async (interactionData, add, messageId, bot) => {
+module.exports.updatePlayerCountWithoutId = async (
+	channelId,
+	add,
+	messageId,
+	bot,
+	amountOfChange
+) => {
 	bot.channels
-		.fetch(interactionData.message.channelId)
+		.fetch(channelId)
 		.then((channel) => {
 			channel.messages
 				.fetch(messageId)
@@ -8,7 +14,7 @@ module.exports.updatePlayerCountWithoutId = async (interactionData, add, message
 					const playerCount = Number(interaction.embeds[0].fields[3].value);
 					const fieldName = "Antal Anmälda Spelare";
 					const fieldToUpdate = interaction.embeds[0].fields.find((f) => f.name === fieldName);
-					fieldToUpdate.value = add ? playerCount + 1 : playerCount - 1;
+					fieldToUpdate.value = add ? playerCount + amountOfChange : playerCount - amountOfChange;
 					interaction.edit({
 						embeds: [interaction.embeds[0]],
 					});

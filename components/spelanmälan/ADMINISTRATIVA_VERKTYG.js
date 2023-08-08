@@ -21,6 +21,10 @@ module.exports = {
 				{
 					label: "Avanmäl spelare",
 					value: "ADMINISTRATIVA_VERKTYG_AVANMÄL",
+				},
+				{
+					label: "Uppdatera bild",
+					value: "ADMINISTRATIVA_VERKTYG_UPPDATERA_BILD",
 				}
 			);
 		const row = new ActionRowBuilder().addComponents(selectMenu);

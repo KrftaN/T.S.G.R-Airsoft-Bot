@@ -4,13 +4,11 @@ const anmälningSchema = require("../../../schemas/anmälningSchema");
 module.exports.anmälningar = async (uniqueId) => {
 	return await mongo().then(async (mongoose) => {
 		try {
-			const result = await anmälningSchema.findOne({
+			const { anmälda } = await anmälningSchema.findOne({
 				uniqueId,
 			});
 
-			return {
-				anmälda: result.anmälda,
-			};
+			return anmälda;
 		} finally {
 			mongoose.connection.close();
 		}

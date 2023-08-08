@@ -11,15 +11,16 @@ const {
 const { splitArrayIntoGroups } = require("../../utility/functions/splitArrayIntoGroups");
 
 module.exports = {
-	name: "test",
+	name: "test1",
 	creator: true,
 	data: new SlashCommandBuilder()
-		.setName("test")
+		.setName("test1")
 		.setDescription("Endast för 'development' ändamål."),
 	async execute(interaction, bot) {
 		const { userCache } = bot;
 
-		userCache.set("test", 1);
+		const cacheValue = userCache.get("test");
+		userCache.set("test", Number(cacheValue) + 1);
 
 		console.log(userCache.get("test"));
 

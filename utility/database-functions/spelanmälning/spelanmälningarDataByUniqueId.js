@@ -8,15 +8,7 @@ module.exports.spelanmälningarDataByUniqueId = async (uniqueId) => {
 				uniqueId,
 			});
 
-			return {
-				datum: result.datum,
-				plats: result.plats,
-				länk: result.länk,
-				pris: result.pris,
-				beskrivning: result.beskrivning,
-				uniqueId,
-				anmälda: result.anmälda,
-			};
+			return result;
 		} finally {
 			mongoose.connection.close();
 		}

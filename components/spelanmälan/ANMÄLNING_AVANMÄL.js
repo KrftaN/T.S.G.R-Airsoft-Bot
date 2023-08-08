@@ -29,11 +29,11 @@ module.exports = {
 			const row = new ActionRowBuilder().addComponents(
 				new StringSelectMenuBuilder()
 					.setCustomId(`ANMÄLNING_AVANMÄL_SELECTMENU ${uniqueId}`)
-					.setPlaceholder("Välj ett namn")
+					.setPlaceholder("Vem vill du avanmäla?")
+					.setMaxValues(duplicates.length)
 					.addOptions(duplicates.map((obj) => ({ label: obj.name, value: obj.name })))
 			);
 			return await interaction.reply({
-				embeds: [new EmbedBuilder().setTitle("Vem vill du avanmäla?").setColor("#ffa500")],
 				ephemeral: true,
 				components: [row],
 			});

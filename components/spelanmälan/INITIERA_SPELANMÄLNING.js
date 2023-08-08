@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
 const { uniqueId } = require("../../utility/functions/uniqueId");
+const { removeNonDigits } = require("../../utility/functions/removeNonDigits");
 const { halveString } = require("../../utility/functions/halveString");
 const {
 	startSpelanmälningar,
@@ -8,7 +9,7 @@ module.exports = {
 	name: "INITIERA_SPELANMÄLNING",
 	async execute(interaction, bot) {
 		const datum = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_DATUM");
-		const pris = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_PRIS");
+		const pris = removeNonDigits(interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_PRIS"));
 		const plats = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_PLATS");
 		const länk = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_LÄNK");
 		const beskrivning = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_BESKRIVNING");
@@ -22,7 +23,7 @@ module.exports = {
 			.addFields(
 				{
 					name: "Plats",
-					value: `[${plats}](${länk})`,
+					value: länk ? `[${plats}](${länk})` : `${plats}`,
 					inline: true,
 				},
 				{
@@ -63,7 +64,12 @@ module.exports = {
 				.setDisabled(false)
 		);
 
-		await interaction.reply({ components: [row], content: "@everyone", embeds: [embed] });
+		await interaction.reply({
+			components: [row],
+			embeds: [embed],
+			content: "@everyone",
+			allowedMentions: { parse: ["everyone"] },
+		});
 		const { id } = await interaction.fetchReply();
 		await startSpelanmälningar(
 			id,
