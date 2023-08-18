@@ -21,7 +21,11 @@ module.exports.removeSeveralNames = async (names, uniqueId, bot) => {
 					}
 				)
 				.then((result) => {
-					updatePlayerCountWithoutId(result.channelId, false, result.messageId, bot, names.length);
+					const { userCache } = bot;
+					const { channelId, messageId } = result;
+
+					userCache.set(uniqueId, result);
+					updatePlayerCountWithoutId(channelId, false, messageId, bot, names.length);
 				});
 		} finally {
 			mongoose.connection.close();

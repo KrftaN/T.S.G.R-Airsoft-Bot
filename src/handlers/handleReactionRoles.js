@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports.handleReactionRoles = (roleId, guildId, user, bot) => {
 	try {
@@ -6,31 +6,33 @@ module.exports.handleReactionRoles = (roleId, guildId, user, bot) => {
 		const member = bot.guilds.cache.get(guildId).members.cache.get(user.id);
 
 		if (member.roles.cache.some((role) => role.id === roleId)) {
-			const embed = new MessageEmbed()
-				.setTitle("Reaction Removed!")
-				.setColor("#800080")
+			const embed = new EmbedBuilder()
+				.setTitle("Roll ändrad!")
+				.setColor("#ffa500")
 				.setDescription(
-					`<:minusbutcoolest:983670417522843698> Successfully removed \`${role.name}\``
+					`<:minusbutcoolest:983670417522843698> \`${role.name}\` rollen har nu tagits bort från ditt konto!`
 				)
 				.setTimestamp(new Date())
-				.setFooter(
-					"Use the help command for more useful commands.",
-					bot.user.avatarURL({ dynamic: true })
-				);
+				.setFooter({
+					text: `Tactical Squad of Random Guys`,
+					iconURL: bot.user.avatarURL({ dynamic: true }),
+				});
 
 			member.send({ embeds: [embed] });
 
 			member.roles.remove(role);
 		} else {
-			const embed = new MessageEmbed()
-				.setTitle("Reaction Added!!")
-				.setColor("#800080")
-				.setDescription(`<:plus:983666900401807370> Successfully added \`${role.name}\``)
+			const embed = new EmbedBuilder()
+				.setTitle("Roll ändrad!")
+				.setColor("#ffa500")
+				.setDescription(
+					`<:plus:983666900401807370> \`${role.name}\` rollen har nu lagts till ditt konto!`
+				)
 				.setTimestamp(new Date())
-				.setFooter(
-					"Use the help command for more useful commands.",
-					bot.user.avatarURL({ dynamic: true })
-				);
+				.setFooter({
+					text: `Tactical Squad of Random Guys`,
+					iconURL: bot.user.avatarURL({ dynamic: true }),
+				});
 
 			member.send({ embeds: [embed] });
 			member.roles.add(role);

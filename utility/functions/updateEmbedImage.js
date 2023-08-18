@@ -1,3 +1,5 @@
+const {EmbedBuilder } = require("discord.js");
+
 module.exports.updateEmbedImage = async (bot, channelId, messageId, link) => {
 	bot.channels
 		.fetch(channelId)
@@ -5,12 +7,9 @@ module.exports.updateEmbedImage = async (bot, channelId, messageId, link) => {
 			channel.messages
 				.fetch(messageId)
 				.then((interaction) => {
-					console.log(interaction.embeds[0].image.url);
-
-					const imageToUpdate = interaction.embeds[0].image.url;
-					imageToUpdate.value = link;
+					const embed = EmbedBuilder.from(interaction.embeds[0]).setImage(link);
 					interaction.edit({
-						embeds: [interaction.embeds[0]],
+						embeds: [embed],
 					});
 				})
 				.catch(console.error);

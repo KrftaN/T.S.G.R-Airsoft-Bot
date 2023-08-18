@@ -7,10 +7,14 @@ module.exports.startReactionRoles = async (
 	roleId,
 	channelId,
 	guildId,
-	reactionRoleId
+	reactionRoleId,
+	bot
 ) => {
 	return await mongo().then(async (mongoose) => {
 		try {
+			const { reactionRoleCache } = bot;
+			let list = reactionRoleCache.get(messageId);
+
 			await new reactionRoleSchema({
 				messageId,
 				emoticon,
@@ -18,7 +22,19 @@ module.exports.startReactionRoles = async (
 				channelId,
 				guildId,
 				reactionRoleId,
-			}).save();
+			})
+				.save()
+				.then(async (result) => {
+					if (Array.isArray(list)) {
+						list.push(result);
+						reactionRoleCache.set(messageId, list);
+
+						console.log(list);
+					} else {
+						const resultFromDB = await reactionRoleSchema.find({ messageId });
+						reactionRoleCache.set(messageId, resultFromDB);
+					}
+				});
 		} finally {
 			mongoose.connection.close();
 		}
