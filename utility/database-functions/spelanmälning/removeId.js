@@ -1,27 +1,33 @@
 const mongo = require("../../mongo");
 const anmälningSchema = require("../../../schemas/anmälningSchema");
-const { updatePlayerCount } = require("../../functions/updatePlayerCount");
+const { updatePlayerCountWithoutId } = require("../../functions/updatePlayerCountWithoutId");
 
-module.exports.removeId = async (messageId, userId, interaction) => {
+module.exports.removeId = async (uniqueId, userId, bot) => {
 	return await mongo().then(async (mongoose) => {
 		try {
 			console.log(`Remove name: ${userId}`);
-
-			await updatePlayerCount(interaction, false);
-			await anmälningSchema.findOneAndUpdate(
-				{
-					messageId,
-				},
-				{
-					$pull: {
-						anmälda: { userId },
+			await anmälningSchema
+				.findOneAndUpdate(
+					{
+						uniqueId,
 					},
-				},
-				{
-					upsert: true,
-					new: true,
-				}
-			);
+					{
+						$pull: {
+							anmälda: { userId },
+						},
+					},
+					{
+						upsert: true,
+						new: true,
+					}
+				)
+				.then((result) => {
+					const { userCache } = bot;
+					const { channelId, messageId } = result;
+
+					userCache.set(uniqueId, result);
+					updatePlayerCountWithoutId(channelId, false, messageId, bot, 1);
+				});
 		} finally {
 			mongoose.connection.close();
 		}

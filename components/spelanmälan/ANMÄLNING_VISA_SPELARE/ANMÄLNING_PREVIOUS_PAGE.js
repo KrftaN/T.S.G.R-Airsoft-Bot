@@ -1,26 +1,30 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
-const { splitArrayIntoGroups } = require("../../utility/functions/splitArrayIntoGroups");
-const { anmälningar } = require("../../utility/database-functions/spelanmälning/anmälningar");
-const { extractCurrentPageNumber } = require("../../utility/functions/extractCurrentPageNumber");
+const { splitArrayIntoGroups } = require("../../../utility/functions/splitArrayIntoGroups");
+const {
+	spelanmälningarDataByUniqueId,
+} = require("../../../utility/database-functions/spelanmälning/spelanmälningarDataByUniqueId");
+const { extractCurrentPageNumber } = require("../../../utility/functions/extractCurrentPageNumber");
 
 module.exports = {
-	name: "ANMÄLNING_NEXT_PAGE",
+	name: "ANMÄLNING_PREVIOUS_PAGE",
 	async execute(interaction, bot) {
 		const footerText = interaction.message.embeds[0].footer.text;
 		const uniqueId = interaction.customId.split(" ")[1];
 		let currentPage = Number(extractCurrentPageNumber(footerText));
 
-		const { anmälda } = await anmälningar(uniqueId);
+		const { anmälda } = await spelanmälningarDataByUniqueId(uniqueId, bot);
 		const { groups, count } = await splitArrayIntoGroups(anmälda);
 		const amountOfPages = Math.ceil(count / 3);
 
-		if (currentPage + 1 > amountOfPages)
+		if (currentPage - 1 === 0)
 			return interaction.reply({
-				embeds: [new EmbedBuilder().setTitle("Det finns inga flera sidor!").setColor("#FF0000")],
+				embeds: [
+					new EmbedBuilder().setTitle("Det finns inte en föregående sida!").setColor("#FF0000"),
+				],
 				ephemeral: true,
 			});
 
-		currentPage += 1;
+		currentPage -= 1;
 
 		const embed = new EmbedBuilder()
 			.setTitle(`Anmälda spelare:`)

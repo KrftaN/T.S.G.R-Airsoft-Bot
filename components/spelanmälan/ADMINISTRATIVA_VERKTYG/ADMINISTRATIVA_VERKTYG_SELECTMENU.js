@@ -5,21 +5,25 @@ const {
 	TextInputStyle,
 	UserSelectMenuBuilder,
 	EmbedBuilder,
+	StringSelectMenuBuilder,
+	StringSelectMenuOptionBuilder,
 } = require("discord.js");
 const {
 	spelanmälningarDataByUniqueId,
-} = require("../../utility/database-functions/spelanmälning/spelanmälningarDataByUniqueId");
+} = require("../../../utility/database-functions/spelanmälning/spelanmälningarDataByUniqueId");
 
 module.exports = {
 	name: "ADMINISTRATIVA_VERKTYG_SELECTMENU",
 	async execute(interaction, bot) {
+		const uniqueId = interaction.customId.split(" ")[1];
 		const { anmälda, datum, beskrivning, plats, länk, pris } = await spelanmälningarDataByUniqueId(
-			interaction.customId.split(" ")[1]
+			uniqueId,
+			bot
 		);
 
 		if (interaction.values[0] === "ADMINISTRATIVA_VERKTYG_REDIGERA") {
 			const modal = new ModalBuilder()
-				.setCustomId(`ADMINISTRATIVA_VERKTYG_REDIGERA ${interaction.customId.split(" ")[1]}`)
+				.setCustomId(`ADMINISTRATIVA_VERKTYG_REDIGERA ${uniqueId}`)
 				.setTitle("Redigera spelanmälningen");
 
 			const secondRow = new ActionRowBuilder().addComponents(
@@ -77,7 +81,7 @@ module.exports = {
 				});
 
 			const selectMenu = new UserSelectMenuBuilder()
-				.setCustomId(`ADMINISTRATIVA_VERKTYG_AVANMÄL ${interaction.customId.split(" ")[1]}`)
+				.setCustomId(`ADMINISTRATIVA_VERKTYG_AVANMÄL ${uniqueId}`)
 				.setPlaceholder("Användare");
 
 			const row = new ActionRowBuilder().addComponents(selectMenu);
@@ -88,7 +92,7 @@ module.exports = {
 			});
 		} else if (interaction.values[0] === "ADMINISTRATIVA_VERKTYG_UPPDATERA_BILD") {
 			const modal = new ModalBuilder()
-				.setCustomId(`ADMINISTRATIVA_VERKTYG_UPPDATERA_BILD ${interaction.customId.split(" ")[1]}`)
+				.setCustomId(`ADMINISTRATIVA_VERKTYG_UPPDATERA_BILD ${uniqueId}`)
 				.setTitle("Updatera spelanmälningsbild");
 
 			const row = new ActionRowBuilder().addComponents(
@@ -101,6 +105,21 @@ module.exports = {
 
 			modal.addComponents(row);
 			await interaction.showModal(modal);
+		} else if (interaction.values[0] === "ADMINISTRATIVA_VERKTYG_AVSLUTA_SPELANMÄLAN") {
+			const row = new ActionRowBuilder().addComponents(
+				new StringSelectMenuBuilder()
+					.setCustomId(`ADMINISTRATIVA_VERKTYG_AVSLUTA_SPELANMÄLAN_BEKRÄFTELSE ${uniqueId}`)
+					.setPlaceholder("Är du säker på att du vill avsluta spelanmälan?")
+					.addOptions(
+						new StringSelectMenuOptionBuilder().setLabel("Ja").setValue("ja"),
+						new StringSelectMenuOptionBuilder().setLabel("Nej").setValue("nej")
+					)
+			);
+			return await interaction.update({
+				ephemeral: true,
+				components: [row],
+				embeds: [],
+			});
 		}
 	},
 };

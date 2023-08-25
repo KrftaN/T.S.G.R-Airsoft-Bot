@@ -5,9 +5,9 @@ const {
 	TextInputStyle,
 	EmbedBuilder,
 } = require("discord.js");
-const { addId } = require("../../utility/database-functions/spelanmälning/addId");
-const { shuffleArray } = require("../../utility/functions/shuffleArray");
-const names = require("../../jsonFiles/Names.json");
+const { addId } = require("../../../utility/database-functions/spelanmälning/addId");
+const { shuffleArray } = require("../../../utility/functions/shuffleArray");
+const names = require("../../../jsonFiles/Names.json");
 const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
@@ -27,12 +27,13 @@ module.exports = {
 						shuffledNames[i].id,
 						shuffledNames[i].namn,
 						interactionToSend,
-						"Foo Bar#1337"
+						"@FooBar",
+						bot
 					);
 				}
 				await interaction.followUp({
 					embeds: [
-						new EmbedBuilder().setTitle("Dummy data successfully inserted!").setColor("#00ff00"),
+						new EmbedBuilder().setTitle("Dummy data successfully inserted!").setColor("#008000"),
 					],
 				});
 				await wait(2500);
@@ -46,15 +47,16 @@ module.exports = {
 				interactionToSend,
 				interaction.user.discriminator !== "0"
 					? `${interaction.user.username}#${interaction.user.discriminator}`
-					: `@${interaction.user.username}`
+					: `@${interaction.user.username}`,
+				bot
 			);
 
 			if (succeded === true) {
 				await interaction.reply({
 					embeds: [
 						new EmbedBuilder()
-							.setDescription(`## \`${namn}\` har blivit anmäld.`)
-							.setColor("#00ff00"),
+							.setDescription(`### \`${namn}\` har blivit anmäld.`)
+							.setColor("#008000"),
 					],
 					ephemeral: true,
 				});
@@ -62,7 +64,7 @@ module.exports = {
 				await interaction.reply({
 					embeds: [
 						new EmbedBuilder()
-							.setDescription(`## ⚠️ Du har redan anmält \`${namn}\`!!`)
+							.setDescription(`### ⚠️ Du har redan anmält \`${namn}\`!!`)
 							.setColor("#FF0000"),
 					],
 					ephemeral: true,

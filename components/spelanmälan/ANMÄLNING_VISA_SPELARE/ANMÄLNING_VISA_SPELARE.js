@@ -1,13 +1,16 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
-const { splitArrayIntoGroups } = require("../../utility/functions/splitArrayIntoGroups");
-const { anmälningar } = require("../../utility/database-functions/spelanmälning/anmälningar");
+const { splitArrayIntoGroups } = require("../../../utility/functions/splitArrayIntoGroups");
+const {
+	spelanmälningarDataByUniqueId,
+} = require("../../../utility/database-functions/spelanmälning/spelanmälningarDataByUniqueId");
 
 module.exports = {
 	name: "ANMÄLNING_VISA_SPELARE",
 	async execute(interaction, bot) {
-		const anmälda = await anmälningar(interaction.customId.split(" ")[1]);
-		console.log(anmälda);
-
+		const { anmälda } = await spelanmälningarDataByUniqueId(
+			interaction.customId.split(" ")[1],
+			bot
+		);
 		const { groups, count } = await splitArrayIntoGroups(anmälda);
 		const amountOfPages = Math.ceil(count / 3);
 

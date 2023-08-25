@@ -1,19 +1,19 @@
 const {
 	ActionRowBuilder,
-	ModalBuilder,
-	TextInputBuilder,
-	TextInputStyle,
+	StringSelectMenuOptionBuilder,
 	StringSelectMenuBuilder,
 	EmbedBuilder,
 } = require("discord.js");
-const { findDuplicateObjects } = require("../../utility/functions/findDuplicateObjects");
+const { findDuplicateObjects } = require("../../../utility/functions/findDuplicateObjects");
+const { extractId } = require("../../../utility/functions/extractId");
 const {
-	spelanmälningarData,
-} = require("../../utility/database-functions/spelanmälning/spelanmälningarData");
+	spelanmälningarDataByUniqueId,
+} = require("../../../utility/database-functions/spelanmälning/spelanmälningarDataByUniqueId");
 module.exports = {
 	name: "ANMÄLNING_AVANMÄL",
 	async execute(interaction, bot) {
-		const { anmälda, uniqueId } = await spelanmälningarData(interaction.message.id);
+		const uniqueId = extractId(interaction.message.embeds[0].footer.text);
+		const { anmälda } = await spelanmälningarDataByUniqueId(uniqueId, bot);
 		if (
 			!anmälda.find((obj) => {
 				if (obj.userId == interaction.user.id) return true;
@@ -38,19 +38,19 @@ module.exports = {
 				components: [row],
 			});
 		}
-		const modal = new ModalBuilder()
-			.setCustomId("ANMÄLNING_AVANMÄL_MODAL")
-			.setTitle("Är du säker att du vill avanmäla dig?");
 
-		modal.addComponents(
-			new ActionRowBuilder().addComponents(
-				new TextInputBuilder()
-					.setCustomId("AVANMÄLAN_SVAR")
-					.setLabel("Skriv 'AVANMÄL' om du vill avanmäla dig.")
-					.setStyle(TextInputStyle.Short)
-					.setPlaceholder("AVANMÄL")
-			)
+		const row = new ActionRowBuilder().addComponents(
+			new StringSelectMenuBuilder()
+				.setCustomId(`ANMÄLNING_AVANMÄL_BEKRÄFTELSE ${uniqueId}`)
+				.setPlaceholder("Är du säker på att du vill avanmäla dig?")
+				.addOptions(
+					new StringSelectMenuOptionBuilder().setLabel("Ja").setValue("ja"),
+					new StringSelectMenuOptionBuilder().setLabel("Nej").setValue("nej")
+				)
 		);
-		await interaction.showModal(modal);
+		return await interaction.reply({
+			ephemeral: true,
+			components: [row],
+		});
 	},
 };

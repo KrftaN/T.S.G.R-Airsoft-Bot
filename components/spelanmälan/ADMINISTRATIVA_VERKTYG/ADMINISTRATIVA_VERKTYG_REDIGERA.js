@@ -1,7 +1,7 @@
 const {
 	spelanmälningarDataByUniqueId,
-} = require("../../utility/database-functions/spelanmälning/spelanmälningarDataByUniqueId");
-const { updateSpelanmälan } = require("../../utility/database-functions/spelanmälning/updateSpelanmälan");
+} = require("../../../utility/database-functions/spelanmälning/spelanmälningarDataByUniqueId");
+const { updateSpelanmälan } = require("../../../utility/database-functions/spelanmälning/updateSpelanmälan");
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
 		const länk = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_LÄNK");
 		const beskrivning = interaction.fields.getTextInputValue("STARTA_SPELANMÄLNING_BESKRIVNING");
 
-		const { channelId, messageId, anmälda } = await spelanmälningarDataByUniqueId(uniqueId);
+		const { channelId, messageId, anmälda } = await spelanmälningarDataByUniqueId(uniqueId, bot);
 
 		await updateSpelanmälan(
 			bot,
@@ -30,7 +30,7 @@ module.exports = {
 		);
 
 		await interaction.update({
-			embeds: [new EmbedBuilder().setTitle("Spelanmälming redigerad!").setColor("#00FF00")],
+			embeds: [new EmbedBuilder().setTitle("Spelanmälming redigerad!").setColor("#008000")],
 			components: [],
 		});
 	},

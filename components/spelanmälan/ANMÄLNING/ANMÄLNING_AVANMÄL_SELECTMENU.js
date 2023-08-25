@@ -1,5 +1,7 @@
 const { EmbedBuilder } = require("discord.js");
-const { removeSeveralNames } = require("../../utility/database-functions/spelanmälning/removeSeveralNames");
+const {
+	removeSeveralNames,
+} = require("../../../utility/database-functions/spelanmälning/removeSeveralNames");
 
 module.exports = {
 	name: "ANMÄLNING_AVANMÄL_SELECTMENU",
@@ -9,8 +11,8 @@ module.exports = {
 			return interaction.update({
 				embeds: [
 					new EmbedBuilder()
-						.setTitle(`\`${interaction.values.join(", ")}\` är nu avanmäld!`)
-						.setColor("#00FF00"),
+						.setDescription(`### \`${interaction.values.join(", ")}\` är nu avanmäld[a]!`)
+						.setColor("#008000"),
 				],
 				components: [],
 			});

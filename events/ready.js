@@ -8,11 +8,11 @@ module.exports = {
 	name: "ready",
 	once: true,
 	async execute(bot) {
-		loadCommands(bot);
-		loadComponents(bot);
+		await loadCommands(bot);
+		await loadComponents(bot);
 		await mongo().then(() => {
 			try {
-				console.log("-> Connected to mongo!");
+				console.log("-> Connected to MongoDB!");
 			} finally {
 				mongoose.connection.close();
 			}
@@ -25,7 +25,7 @@ module.exports = {
 			type: "WATCHING",
 		});
 
-		//await cacheMessages(bot);
+		await cacheMessages(bot);
 		return bot;
 	},
 };

@@ -17,13 +17,8 @@ module.exports = {
 		.setName("test")
 		.setDescription("Endast för 'development' ändamål."),
 	async execute(interaction, bot) {
-		const { userCache } = bot;
-
-		userCache.set("test", 1);
-
-		console.log(userCache.get("test"));
-
-		interaction.reply({ content: "@everyone", allowedMentions: { parse: ["everyone"] } });
+		bot.components.get("ADMINISTRATIVA_VERKTYG").execute();
+		console.log(bot);
 	},
 };
 //users2.join("\n")

@@ -1,10 +1,10 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
-const { uniqueId } = require("../../utility/functions/uniqueId");
-const { removeNonDigits } = require("../../utility/functions/removeNonDigits");
-const { halveString } = require("../../utility/functions/halveString");
+const { uniqueId } = require("../../../utility/functions/uniqueId");
+const { removeNonDigits } = require("../../../utility/functions/removeNonDigits");
+const { halveString } = require("../../../utility/functions/halveString");
 const {
 	startSpelanmälningar,
-} = require("../../utility/database-functions/spelanmälning/startSpelanmälningar");
+} = require("../../../utility/database-functions/spelanmälning/startSpelanmälningar");
 module.exports = {
 	name: "INITIERA_SPELANMÄLNING",
 	async execute(interaction, bot) {

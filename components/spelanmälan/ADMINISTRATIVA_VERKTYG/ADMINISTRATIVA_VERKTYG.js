@@ -25,6 +25,10 @@ module.exports = {
 				{
 					label: "Uppdatera bild",
 					value: "ADMINISTRATIVA_VERKTYG_UPPDATERA_BILD",
+				},
+				{
+					label: "Avsluta spelanmälan",
+					value: "ADMINISTRATIVA_VERKTYG_AVSLUTA_SPELANMÄLAN",
 				}
 			);
 		const row = new ActionRowBuilder().addComponents(selectMenu);

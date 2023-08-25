@@ -1,8 +1,7 @@
-const {
-	reactionRoleInformation,
-} = require("../utility/database-functions/reactionroles/reactionRoleInformation");
 const { handleReactionRoles } = require("../src/handlers/handleReactionRoles");
-let data;
+const {
+	getSortedReactionRole,
+} = require("../utility/database-functions/reactionroles/getSortedReactionRole");
 
 module.exports = {
 	name: "messageReactionAdd",
@@ -17,24 +16,19 @@ module.exports = {
 			}
 		}
 
-		if (user.bot === true) return;
+		if (user.bot) return;
 
-		data = data ?? (await reactionRoleInformation());
+		const reactionRole = await getSortedReactionRole(reaction.message.id, reaction.emoji.name, bot);
+		if (!reactionRole) return;
+		const { emoticon, messageId, roleId, guildId } = reactionRole;
 
-		const reactionRole = data.find(({ id }) => id === reaction.message.id);
-
-		if (reactionRole.emoticon === reaction.emoji.name) {
-			handleReactionRoles(reactionRole.role, reactionRole.guild, user, bot); //Adds/removes the role.
+		if (emoticon === reaction.emoji.name) {
 			reaction.users.remove(user);
-		} else if (reactionRole.id === reaction.message.id && user.bot === false) {
+			handleReactionRoles(roleId, guildId, user, bot); //Adds/removes the role.
+
+		} else if (messageId === reaction.message.id && user.bot === false) {
 			//Removes the reaction if it was made on one of the reaction role messages and not one of the chosen reactions.
 			reaction.users.remove(user);
 		}
 	},
-};
-module.exports.changeCache = async (element) => {
-	if (!data) {
-		data = await reactionRoleInformation();
-	}
-	return data.push(element);
 };
